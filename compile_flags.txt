@@ -1,3 +1,0 @@
--I
-C:/gcc-15.2.0/include
---target=x86_64-w64-mingw32
