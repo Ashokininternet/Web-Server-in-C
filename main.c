@@ -1,4 +1,4 @@
-#include <asm-generic/socket.h>
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,6 +12,26 @@
 #define PORT 2728
 #define BACKLOG 10
 #define SIZE 1024
+
+  void getFileURL(char *rout, char *fileURL){
+    char *question = strrchr(rout, '?');
+    if (question)
+    {
+      *question = "\0";
+    }
+    if (rout[strlen(rout) - 1] == "/")
+    {
+      strcat(rout, "index.html");
+    }
+    strcpy(fileURL, "htdocs");
+    strcat(fileURL, rout);
+
+    const char *dot = strrchr(fileURL, '.');
+    if (!dot || dot == fileURL)
+    {
+      strcat(fileURL, "index.html");
+    }
+  }
 
 int main() {
   int serverSocket;
@@ -56,6 +76,10 @@ int main() {
   printf("%s %s",method, rout );
   free(request);
 
+  char fileURL[100];
+  getFileURL(rout, fileURL);
 
+  FILE *file = fopen(fileURL, "R");
+  
   return 0;
 }
