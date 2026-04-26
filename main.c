@@ -79,7 +79,7 @@ int main() {
   char fileURL[100];
   getFileURL(rout, fileURL);
 
-  FILE *file = fopen(fileURL, "R");
-  
+  FILE *file = fopen(fileURL, "r");
+
   return 0;
 }
