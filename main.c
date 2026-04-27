@@ -17,13 +17,13 @@
     char *question = strrchr(rout, '?');
     if (question)
     {
-      *question = "\0";
+      *question = '\0';
     }
-    if (rout[strlen(rout) - 1] == "/")
+    if (rout[strlen(rout) - 1] == '/')
     {
       strcat(rout, "index.html");
     }
-    strcpy(fileURL, "htdocs");
+    strcpy(fileURL, "myfolder");
     strcat(fileURL, rout);
 
     const char *dot = strrchr(fileURL, '.');
@@ -32,6 +32,44 @@
       strcat(fileURL, "index.html");
     }
   }
+  void getMimeType(char *file, char *mime){
+    const char *dot = strrchr(file, '.');
+    if (dot == NULL)
+    {
+      strcpy(mime, "text/html");
+    }
+    else if (strcmp(dot, ".html") == 0)
+    {
+      strcpy(mime, "text/html");
+    }
+        else if (strcmp(dot, ".css") == 0)
+    {
+      strcpy(mime, "text/css");
+    }
+        else if (strcmp(dot, ".js") == 0)
+    {
+      strcpy(mime, "text/js");
+    }
+        else if (strcmp(dot, ".png") == 0)
+    {
+      strcpy(mime, "text/png");
+    }
+        else if (strcmp(dot, ".jpg") == 0)
+    {
+      strcpy(mime, "text/jpg");
+    }
+        else if (strcmp(dot, ".gif") == 0)
+    {
+      strcpy(mime, "text/gif");
+    }
+        else if (strcmp(dot, ".c") == 0)
+    {
+      strcpy(mime, "text/c");
+    }
+    else 
+      strcpy(mime, "text/html");
+  };
+
 
 int main() {
   int serverSocket;
@@ -81,5 +119,15 @@ int main() {
 
   FILE *file = fopen(fileURL, "r");
 
+  if(!file){
+    const char response[] = "HTTP/1.1 404 Not Found\r\n\n";
+    send(clientSocket, response, sizeof(response), 0);
+  }
+
+  char reaHeader[SIZE];
+  char mimeType[32];
+  getMimeType(file, mimeType);
+  
+  char timeBuffer[100];
   return 0;
 }
