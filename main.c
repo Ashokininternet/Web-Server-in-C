@@ -130,7 +130,7 @@ int main() {
 
   char resHeader[SIZE];
   char mimeType[32];
-  getMimeType(file, mimeType);
+  getMimeType(fileURL, mimeType);
   
   char timeBuffer[100];
   getTimeString(timeBuffer);
@@ -149,7 +149,7 @@ int main() {
   char *fileBuffer = resBuffer + headerSize;
   fread(fileBuffer, fsize, 1, file);
 
-  send(clientSocket, resBuffer, fsize, + headerSize, 0);
+  send(clientSocket, resBuffer, fsize + headerSize, 0);
   free(resBuffer);
   fclose(file);
   return 0;
