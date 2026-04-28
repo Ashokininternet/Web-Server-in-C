@@ -69,7 +69,11 @@
     else 
       strcpy(mime, "text/html");
   };
-
+  void getTimeString(char *buf) {
+      time_t now = time(NULL);
+      struct tm *gmt = gmtime(&now);
+      strftime(buf, 100, "%a, %d %b %Y %H:%M:%S GMT", gmt);
+  }
 
 int main() {
   int serverSocket;
@@ -124,10 +128,20 @@ int main() {
     send(clientSocket, response, sizeof(response), 0);
   }
 
-  char reaHeader[SIZE];
+  char resHeader[SIZE];
   char mimeType[32];
   getMimeType(file, mimeType);
   
   char timeBuffer[100];
+  getTimeString(timeBuffer);
+
+  sprintf(resHeader, "HTTP/1.1 200 OK\r\nDate: %s\r\nContent-Type: %s\r\n\n", timeBuffer, mimeType);
+  int headerSize = strlen(resHeader);
+
+  printf(" %s", mimeType);
+
+  fseek(file, 0, SEEK_END);
+  long fsize = ftell(file);
+  fseek(file, 0, SEEK_SET);
   return 0;
 }
