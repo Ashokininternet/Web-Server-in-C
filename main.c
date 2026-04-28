@@ -143,5 +143,14 @@ int main() {
   fseek(file, 0, SEEK_END);
   long fsize = ftell(file);
   fseek(file, 0, SEEK_SET);
+
+  char *resBuffer = (char *)malloc(fsize + headerSize);
+  strcpy(resBuffer, resHeader);
+  char *fileBuffer = resBuffer + headerSize;
+  fread(fileBuffer, fsize, 1, file);
+
+  send(clientSocket, resBuffer, fsize, + headerSize, 0);
+  free(resBuffer);
+  fclose(file);
   return 0;
 }
