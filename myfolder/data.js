@@ -1,3 +1,4 @@
+//Fake data
 export const mainData = [
     {
         id: "123",
